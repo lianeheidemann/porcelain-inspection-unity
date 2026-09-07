@@ -8,6 +8,8 @@
   <img src="https://img.shields.io/badge/Development-Active-2563EB?style=for-the-badge" alt="Development: Active">
 </p>
 
+[![Deploy WebGL to GitHub Pages](https://github.com/lianeheidemann/porcelain-inspection-unity/actions/workflows/deploy-pages.yml/badge.svg?branch=main)](https://github.com/lianeheidemann/porcelain-inspection-unity/actions/workflows/deploy-pages.yml)
+
 Interactive prototype built with **Unity 6 + C#** that simulates the visual
 inspection of a porcelain piece in 3D. The user rotates the piece, zooms the
 camera, and clicks points of interest to read details about each region.
