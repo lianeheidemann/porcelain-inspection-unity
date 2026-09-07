@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 1600 420"
+     role="img"
+     aria-labelledby="title desc">
+  <title id="title">Porcelain Inspection — Unity 3D</title>
+  <desc id="desc">Responsive transparent wordmark that adapts to light and dark color schemes.</desc>
+
+  <style>
+    :root {
+      --primary: #0B1F33;
+      --accent: #2563EB;
+      --secondary: #48627D;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --primary: #F8FAFC;
+        --accent: #60A5FA;
+        --secondary: #A9BED3;
+      }
+    }
+
+    .wordmark {
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: -2px;
+    }
+
+    .subtitle {
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-weight: 500;
+      letter-spacing: 18px;
+    }
+  </style>
+
+  <!-- Transparent background by design -->
+
+  <g transform="translate(800 180)">
+    <text class="wordmark"
+          x="0" y="0"
+          text-anchor="middle"
+          font-size="142">
+      <tspan fill="var(--primary)">Porcelain </tspan><tspan fill="var(--accent)">Inspection</tspan>
+    </text>
+
+    <text class="subtitle"
+          x="0" y="118"
+          text-anchor="middle"
+          font-size="52"
+          fill="var(--secondary)">UNITY 3D</text>
+  </g>
+</svg>
