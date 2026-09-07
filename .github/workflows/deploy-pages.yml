@@ -31,6 +31,12 @@ jobs:
     name: Build WebGL
     runs-on: ubuntu-latest
     steps:
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          sudo docker image prune --all --force
+          df -h /
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
