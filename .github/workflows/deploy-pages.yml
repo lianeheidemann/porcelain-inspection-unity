@@ -31,7 +31,11 @@ jobs:
   build:
     name: Package WebGL build
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    # Don't gate on ci.yml's overall conclusion: an unrelated matrix leg
+    # (e.g. StandaloneWindows64) failing shouldn't block deploying a WebGL
+    # build that already succeeded. The download-artifact step below fails
+    # this job on its own if the WebGL artifact was never produced.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion != 'cancelled' }}
     steps:
       - name: Find CI run to pull the WebGL artifact from
         id: ci_run

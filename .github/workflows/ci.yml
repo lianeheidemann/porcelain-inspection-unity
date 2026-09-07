@@ -52,7 +52,26 @@ jobs:
             Library-${{ matrix.targetPlatform }}-
             Library-
 
+      # Unity's license activation occasionally gets killed (exit 137) right
+      # after the handshake succeeds, before any real build work starts -
+      # seen even with no other concurrent workflow run in this repo, so
+      # it's an external/intermittent licensing hiccup rather than
+      # something we can fully prevent. Retry once before failing for real.
       - name: Build
+        id: build
+        uses: game-ci/unity-builder@v4
+        continue-on-error: true
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: ${{ matrix.targetPlatform }}
+          versioning: None
+
+      - name: Build (retry)
+        id: build_retry
+        if: steps.build.outcome == 'failure'
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -61,6 +80,10 @@ jobs:
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: None
+
+      - name: Fail if both build attempts failed
+        if: steps.build.outcome == 'failure' && steps.build_retry.outcome == 'failure'
+        run: exit 1
 
       - name: Upload build
         uses: actions/upload-artifact@v4
