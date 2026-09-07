@@ -14,7 +14,7 @@ camera, and clicks points of interest to read details about each region.
 
 ## Demo
 
-![Project running](media/interface-1.gif)
+<img width="450" src="media/interface-1.gif">
 
 ## Features
 
