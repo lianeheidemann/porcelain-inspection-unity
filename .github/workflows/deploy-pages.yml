@@ -1,0 +1,75 @@
+name: Deploy WebGL to GitHub Pages
+
+# Builds the WebGL player and publishes it to GitHub Pages on every push to main.
+#
+# Requires repository secrets for Unity activation (same as ci.yml):
+#   UNITY_LICENSE  - contents of the .ulf license file (personal license)
+#   UNITY_EMAIL    - Unity account email
+#   UNITY_PASSWORD - Unity account password
+# See https://game.ci/docs/github/activation
+#
+# One-time setup:
+#   - Settings -> Pages -> Build and deployment -> Source = GitHub Actions
+#   - Player Settings -> WebGL -> Publishing Settings: Compression Format = Disabled
+#     (or keep Brotli/Gzip and enable Decompression Fallback) - GitHub Pages
+#     cannot send Content-Encoding headers.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build WebGL
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-WebGL-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-WebGL-
+            Library-
+
+      - name: Build
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: WebGL
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/WebGL/WebGL
+
+  deploy:
+    name: Deploy to Pages
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
