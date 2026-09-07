@@ -3,9 +3,9 @@
 <p align="left">
   <img src="https://img.shields.io/badge/Unity-6000.6.0f1-000000?style=for-the-badge&logo=unity&logoColor=white" alt="Unity">
   <img src="https://img.shields.io/badge/Status-Prototype-F59E0B?style=for-the-badge" alt="Prototype">
-  <img src="https://img.shields.io/github/languages/top/lianeheidemann/porcelain-inspection-unity?style=for-the-badge" alt="Top language">
-  <img src="https://img.shields.io/github/license/lianeheidemann/porcelain-inspection-unity?style=for-the-badge" alt="License">
-  <img src="https://img.shields.io/github/last-commit/lianeheidemann/porcelain-inspection-unity?style=for-the-badge" alt="Last commit">
+  <img src="https://img.shields.io/badge/Language-C%23-512BD4?style=for-the-badge&logo=csharp&logoColor=white" alt="Language: C#">
+  <img src="https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge" alt="License: MIT">
+  <img src="https://img.shields.io/badge/Development-Active-2563EB?style=for-the-badge" alt="Development: Active">
 </p>
 
 Interactive prototype built with **Unity 6 + C#** that simulates the visual
