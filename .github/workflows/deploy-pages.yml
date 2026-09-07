@@ -1,12 +1,10 @@
 name: Deploy WebGL to GitHub Pages
 
-# Builds the WebGL player and publishes it to GitHub Pages on every push to main.
-#
-# Requires repository secrets for Unity activation (same as ci.yml):
-#   UNITY_LICENSE  - contents of the .ulf license file (personal license)
-#   UNITY_EMAIL    - Unity account email
-#   UNITY_PASSWORD - Unity account password
-# See https://game.ci/docs/github/activation
+# Publishes the WebGL build to GitHub Pages after ci.yml finishes building it
+# on main. Reuses ci.yml's "Build-WebGL" artifact instead of building Unity
+# again here, so this workflow never needs to activate a Unity license
+# itself (Unity's personal license only allows one active session at a
+# time - a second concurrent activation kills the first with exit code 137).
 #
 # One-time setup:
 #   - Settings -> Pages -> Build and deployment -> Source = GitHub Actions
@@ -15,12 +13,15 @@ name: Deploy WebGL to GitHub Pages
 #     cannot send Content-Encoding headers.
 
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: pages
@@ -28,44 +29,40 @@ concurrency:
 
 jobs:
   build:
-    name: Build WebGL
+    name: Package WebGL build
     runs-on: ubuntu-latest
-    # Unity's personal license only allows one active session at a time.
-    # Share a lock with ci.yml's build job so concurrent Unity Editor
-    # activations don't kill each other (exit code 137).
-    concurrency:
-      group: unity-editor-license
-      cancel-in-progress: false
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Free disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache/CodeQL /usr/local/share/boost
-          sudo docker image prune --all --force
-          df -h /
-
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Find CI run to pull the WebGL artifact from
+        id: ci_run
+        uses: actions/github-script@v7
         with:
-          lfs: true
+          script: |
+            if (context.eventName === 'workflow_run') {
+              core.setOutput('run_id', context.payload.workflow_run.id);
+              return;
+            }
+            const { data } = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'ci.yml',
+              branch: 'main',
+              status: 'success',
+              per_page: 1,
+            });
+            if (data.workflow_runs.length === 0) {
+              core.setFailed('No successful CI run found on main to pull the WebGL build from.');
+              return;
+            }
+            core.setOutput('run_id', data.workflow_runs[0].id);
 
-      - name: Cache Library
-        uses: actions/cache@v4
+      - name: Download WebGL build artifact from CI
+        uses: actions/download-artifact@v4
         with:
-          path: Library
-          key: Library-WebGL-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-WebGL-
-            Library-
-
-      - name: Build
-        uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: WebGL
-          versioning: None
+          name: Build-WebGL
+          path: build
+          run-id: ${{ steps.ci_run.outputs.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
