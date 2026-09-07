@@ -2,45 +2,70 @@
 
 <p align="left">
   <img src="https://img.shields.io/badge/Unity-6000.6.0f1-000000?style=for-the-badge&logo=unity&logoColor=white" alt="Unity">
-  <img src="https://img.shields.io/badge/Linguagem-C%23-239120?style=for-the-badge&logo=csharp&logoColor=white" alt="C#">
-  <img src="https://img.shields.io/badge/Status-Protótipo-F59E0B?style=for-the-badge" alt="Protótipo">
+  <img src="https://img.shields.io/badge/Status-Prototype-F59E0B?style=for-the-badge" alt="Prototype">
+  <img src="https://img.shields.io/github/languages/top/lianeheidemann/porcelain-inspection-unity?style=for-the-badge" alt="Top language">
+  <img src="https://img.shields.io/github/license/lianeheidemann/porcelain-inspection-unity?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/github/last-commit/lianeheidemann/porcelain-inspection-unity?style=for-the-badge" alt="Last commit">
 </p>
 
-Protótipo interativo em **Unity 6 + C#** que simula a inspeção visual de uma
-peça de porcelana em 3D. O usuário gira a peça, aproxima a câmera e clica em
-pontos de interesse para consultar detalhes de cada região.
+Interactive prototype built with **Unity 6 + C#** that simulates the visual
+inspection of a porcelain piece in 3D. The user rotates the piece, zooms the
+camera, and clicks points of interest to read details about each region.
 
-## Demonstração
+## Demo
 
-![Demonstração do projeto em execução](assets-repository/interface-1.gif)
+![Project running](media/interface-1.gif)
 
-## Funcionalidades
+## Features
 
-- **Rotação orbital** da peça com o mouse (`PorcelainRotator`)
-- **Zoom** da câmera pela roda do mouse, com limites de distância (`CameraZoom`)
-- **Pontos de inspeção** clicáveis com animação de destaque (`InspectionPoint`)
-- **Painel de UI** que exibe título e descrição do ponto selecionado (`InspectionUIManager`)
+- **Orbital rotation** of the piece with the mouse (`PorcelainRotator`)
+- **Camera zoom** via mouse wheel, with distance limits (`CameraZoom`)
+- **Clickable inspection points** with a highlight animation (`InspectionPoint`)
+- **UI panel** showing the title and description of the selected point (`InspectionUIManager`)
 
-## Requisitos
+## Controls
 
-- Unity **6000.6.0f1** (Unity 6)
-- Pacote **Input System**
+| Action | Input |
+|--------|-------|
+| Rotate the piece | Hold **left mouse button** and drag |
+| Zoom in / out | **Mouse wheel** |
+| Open an inspection point | **Left click** a marker on the piece |
 
-## Como executar
+## Running the project
 
-1. Clone o repositório.
-2. Abra a pasta do projeto pelo **Unity Hub** com a versão indicada acima.
-3. Abra a cena principal em `Assets/Scenes/` e pressione **Play**.
+### Prerequisites
 
-## Estrutura
+- [Unity Hub](https://unity.com/download)
+- Unity Editor **6000.6.0f1** (Unity 6)
+- [Git](https://git-scm.com/) and [Git LFS](https://git-lfs.com/) — models, textures and media are stored via LFS
+
+### Run in the Editor
+
+```bash
+git lfs install
+git clone https://github.com/lianeheidemann/porcelain-inspection-unity.git
+```
+
+1. In **Unity Hub** → **Add** → select the cloned folder.
+2. Open the project with Unity **6000.6.0f1** (Unity Hub will offer to install it if missing).
+3. Open the scene `Assets/Scenes/SampleScene.unity`.
+4. Press **Play**.
+
+### Build a standalone player
+
+**File → Build Settings**, add the scene above, pick a target
+(Windows / WebGL), then **Build**. The GitHub Actions workflow builds the
+same targets automatically on every push.
+
+## Structure
 
 ```
 Assets/
-├── Script/        Scripts de inspeção, rotação e zoom
-├── Scenes/        Cenas do projeto
-└── Materials/     Materiais da peça de porcelana
+├── Script/        Inspection, rotation, and zoom scripts
+├── Scenes/        Project scenes
+└── Materials/     Porcelain piece materials
 ```
 
-## Licença
+## License
 
-Distribuído sob a licença [MIT](LICENSE).
+Released under the [MIT](LICENSE) license.
