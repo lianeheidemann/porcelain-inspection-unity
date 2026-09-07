@@ -75,7 +75,7 @@ Assets/
 - [ ] Inspection content as ScriptableObject assets (title, description, image)
 - [ ] Rebindable controls through the Input Actions asset (gamepad included)
 - [ ] Multiple pieces with a piece switcher
-- [ ] Playable WebGL build published via GitHub Pages
+- [x] Playable WebGL build published via GitHub Pages
 - [ ] EditMode tests wired into the CI workflow
       
 ## License
