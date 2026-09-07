@@ -66,6 +66,16 @@ Assets/
 └── Materials/     Porcelain piece materials
 ```
 
+## Roadmap
+
+- [ ] Reset-view control (`R` / on-screen button)
+- [ ] Hover highlight on inspection points
+- [ ] Inspection content as ScriptableObject assets (title, description, image)
+- [ ] Rebindable controls through the Input Actions asset (gamepad included)
+- [ ] Multiple pieces with a piece switcher
+- [ ] Playable WebGL build published via GitHub Pages
+- [ ] EditMode tests wired into the CI workflow
+      
 ## License
 
 Released under the [MIT](LICENSE) license.
