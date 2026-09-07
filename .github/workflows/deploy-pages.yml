@@ -30,6 +30,12 @@ jobs:
   build:
     name: Build WebGL
     runs-on: ubuntu-latest
+    # Unity's personal license only allows one active session at a time.
+    # Share a lock with ci.yml's build job so concurrent Unity Editor
+    # activations don't kill each other (exit code 137).
+    concurrency:
+      group: unity-editor-license
+      cancel-in-progress: false
     steps:
       - name: Free disk space
         run: |
