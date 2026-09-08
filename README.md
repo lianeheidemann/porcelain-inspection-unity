@@ -1,4 +1,6 @@
-# Porcelain Inspection — Unity 3D
+<p align="center">
+  <img width="700" src="media/logo/porcelain-inspection-logo-adaptive.svg" alt="Porcelain Inspection — Unity 3D">
+</p>
 
 <p align="left">
   <img src="https://img.shields.io/badge/Unity-6000.6.0f1-000000?style=for-the-badge&logo=unity&logoColor=white" alt="Unity">
