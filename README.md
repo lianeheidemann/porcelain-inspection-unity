@@ -5,7 +5,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Unity-6000.6.0f1-000000?style=for-the-badge&logo=unity&logoColor=white" alt="Unity">
   <img src="https://img.shields.io/badge/Status-Prototype-F59E0B?style=for-the-badge" alt="Prototype">
-  <img src="https://img.shields.io/badge/Language-C%23-512BD4?style=for-the-badge&logo=csharp&logoColor=white" alt="Language: C#">
+  <img src="https://img.shields.io/badge/Language-C%23-512BD4?style=for-the-badge&logo=csharp&logoColor=white" alt="Language: C#"><br>
   <img src="https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge" alt="License: MIT">
   <img src="https://img.shields.io/badge/Development-Active-2563EB?style=for-the-badge" alt="Development: Active">
 </p>
