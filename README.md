@@ -20,9 +20,11 @@ Interactive prototype built with **Unity 6 + C#** that simulates the visual
 inspection of a porcelain piece in 3D. The user rotates the piece, zooms the
 camera, and clicks points of interest to read details about each region.
 
-## Demo
+---
 
+<div align="center">
 <img width="450" src="media/interface-1.gif">
+</div>
 
 ## Features
 
