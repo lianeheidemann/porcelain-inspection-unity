@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PorcelainRotator : MonoBehaviour
@@ -9,6 +10,7 @@ public class PorcelainRotator : MonoBehaviour
 
     private float horizontalAngle;
     private float verticalAngle;
+    private bool isDragging;
 
     private void Start()
     {
@@ -19,28 +21,76 @@ public class PorcelainRotator : MonoBehaviour
 
     private void Update()
     {
-        if (Mouse.current == null)
+        Vector2 movement = Vector2.zero;
+
+        // Mouse no computador
+        if (Mouse.current != null)
+        {
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                isDragging = !IsPointerOverUI();
+            }
+
+            if (Mouse.current.leftButton.wasReleasedThisFrame)
+            {
+                isDragging = false;
+            }
+
+            if (isDragging && Mouse.current.leftButton.isPressed)
+            {
+                movement = Mouse.current.delta.ReadValue();
+            }
+        }
+
+        // Toque na tela do celular
+        if (Touchscreen.current != null)
+        {
+            var touch = Touchscreen.current.primaryTouch;
+
+            if (touch.press.wasPressedThisFrame)
+            {
+                isDragging = !IsPointerOverUI();
+            }
+
+            if (touch.press.wasReleasedThisFrame)
+            {
+                isDragging = false;
+            }
+
+            if (isDragging && touch.press.isPressed)
+            {
+                movement = touch.delta.ReadValue();
+            }
+        }
+
+        RotatePorcelain(movement);
+    }
+
+    private void RotatePorcelain(Vector2 movement)
+    {
+        if (movement.sqrMagnitude <= 0f)
             return;
 
-        if (Mouse.current.leftButton.isPressed)
-        {
-            Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+        horizontalAngle -= movement.x * rotationSensitivity;
+        verticalAngle += movement.y * rotationSensitivity;
 
-            horizontalAngle -= mouseDelta.x * rotationSensitivity;
-            verticalAngle += mouseDelta.y * rotationSensitivity;
+        verticalAngle = Mathf.Clamp(
+            verticalAngle,
+            minimumVerticalAngle,
+            maximumVerticalAngle
+        );
 
-            verticalAngle = Mathf.Clamp(
-                verticalAngle,
-                minimumVerticalAngle,
-                maximumVerticalAngle
-            );
+        transform.rotation = Quaternion.Euler(
+            verticalAngle,
+            horizontalAngle,
+            0f
+        );
+    }
 
-            transform.rotation = Quaternion.Euler(
-                verticalAngle,
-                horizontalAngle,
-                0f
-            );
-        }
+    private bool IsPointerOverUI()
+    {
+        return EventSystem.current != null &&
+               EventSystem.current.IsPointerOverGameObject();
     }
 
     private float NormalizeAngle(float angle)
